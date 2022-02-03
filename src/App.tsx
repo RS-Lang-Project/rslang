@@ -1,6 +1,6 @@
 import { FC } from "react";
 
-const App:FC = () => {
+const App: FC = () => {
   return (
     <div className="App">
       App
