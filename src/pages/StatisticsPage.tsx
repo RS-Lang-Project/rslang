@@ -4,7 +4,7 @@ import { FC } from 'react';
 
 const StatisticsPage: FC = () => (
   <div>
-    Textbook
+    Statistics
   </div>
 );
 
