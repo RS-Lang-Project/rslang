@@ -1,0 +1,13 @@
+.header-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.header-nav {
+  display: flex;
+}
+
+.drop-down-menu {
+  display: flex;
+  flex-direction: column;
+}
