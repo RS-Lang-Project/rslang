@@ -1,3 +1,5 @@
+import '../styles/App.css';
+
 import { FC } from 'react';
 
 const App: FC = () => (
