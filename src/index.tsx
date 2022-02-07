@@ -7,7 +7,7 @@ ReactDOM.render(
 <<<<<<< HEAD
   <React.StrictMode>
     <ChakraProvider>
-    <App />
+      <App />
     </ChakraProvider>
   </React.StrictMode>,
 =======
