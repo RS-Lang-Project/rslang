@@ -1,5 +1,3 @@
-import '../styles/SprintGamePage.css';
-
 import { FC } from 'react';
 
 const SprintGamePage: FC = () => (
