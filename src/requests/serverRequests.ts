@@ -11,7 +11,7 @@ import {
   SignInResult,
 } from './requestTypes';
 
-const MAIN_LINK = 'https://rs-lang-project.herokuapp.com';
+export const MAIN_LINK = 'https://rs-lang-project.herokuapp.com';
 type secondFetchParams = object | null;
 async function getResponse<T>(url: string, obj: secondFetchParams = null): Promise<T> {
   let result;

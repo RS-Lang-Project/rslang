@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { Link } from 'react-router-dom';
+
 import {
   Box,
   Stack,
@@ -16,7 +17,6 @@ import {
 import { HamburgerIcon, ChevronDownIcon } from '@chakra-ui/icons';
 import 'focus-visible/dist/focus-visible';
 import '../styles/App.css';
-import WaveForHeader from './UI/WaveForHeader';
 
 const Header: FC = (props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -30,8 +30,7 @@ const Header: FC = (props) => {
           align="center"
           justify="space-between"
           wrap="wrap"
-          padding={6}
-          paddingBottom={0}
+          padding={4}
           color="white"
         >
           <Heading as="h1" size="lg" color="yellow.300">
@@ -100,7 +99,6 @@ const Header: FC = (props) => {
           </Box>
         </Flex>
       </Container>
-      <WaveForHeader />
     </Box>
   );
 };

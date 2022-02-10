@@ -4,12 +4,13 @@ import {
 } from 'react-router-dom';
 import './styles/App.css';
 import Header from './components/Header';
-import Footer from './components/Footer';
 
 const MainPage = lazy(() => import('./pages/MainPage'));
 const TextbookPage = lazy(() => import('./pages/TextbookPage'));
 const AudioGamePage = lazy(() => import('./pages/AudioGamePage'));
+const AudioPromoPage = lazy(() => import('./pages/AudioGamePage'));
 const SprintGamePage = lazy(() => import('./pages/SprintGamePage'));
+const SprintPromoPage = lazy(() => import('./pages/SprintPromoPage'));
 const StatisticsPage = lazy(() => import('./pages/StatisticsPage'));
 
 const App: FC = () => (
@@ -20,12 +21,13 @@ const App: FC = () => (
         <Routes>
           <Route path="/" element={<MainPage />} />
           <Route path="/textbook" element={<TextbookPage />} />
-          <Route path="/audio" element={<AudioGamePage />} />
-          <Route path="/sprint" element={<SprintGamePage />} />
+          <Route path="/audio" element={<AudioPromoPage />} />
+          <Route path="/audio-game:group/:page" element={<AudioGamePage />} />
+          <Route path="/sprint" element={<SprintPromoPage />} />
+          <Route path="/sprint-game/:group/:page" element={<SprintGamePage />} />
           <Route path="/statistics" element={<StatisticsPage />} />
         </Routes>
       </Suspense>
-      <Footer />
     </div>
   </BrowserRouter>
 );
