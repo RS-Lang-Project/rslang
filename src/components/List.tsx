@@ -3,8 +3,8 @@ import { Box } from '@chakra-ui/react';
 import { Word } from '../requests/requestTypes';
 
 interface ListProps {
-  items: Word[] | undefined;
-  renderItems: (item: Word) => React.ReactNode;
+  items: Word[],
+  renderItems: (item: Word) => React.ReactNode,
 }
 
 const List: FC<ListProps> = ({ items, renderItems }) => (

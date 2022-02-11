@@ -6,11 +6,11 @@ import {
 } from '@chakra-ui/react';
 import mainImg from '../assets/img/main-img.jpg';
 import Footer from '../components/Footer';
-import WaveForHeader from '../components/UI/WaveForHeader';
+import { ReactComponent as HeaderWave } from '../assets/svg/HeaderWave.svg';
 
 const MainPage: FC = () => (
   <Box>
-    <WaveForHeader />
+    <HeaderWave />
     <Container>
       <Image src={mainImg} alt="photo" />
     </Container>

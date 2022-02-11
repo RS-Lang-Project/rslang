@@ -16,14 +16,14 @@ import {
 } from 'chakra-paginator';
 import { CgChevronLeft, CgChevronRight } from 'react-icons/cg';
 import Footer from '../components/Footer';
-import WaveForHeader from '../components/UI/WaveForHeader';
+import { ReactComponent as HeaderWave } from '../assets/svg/HeaderWave.svg';
 import List from '../components/List';
 import { Word } from '../requests/requestTypes';
 import CardWord from '../components/CardWord';
 import { getAllWords } from '../requests/serverRequests';
 
 const TextbookPage: FC = () => {
-  const [dataWords, setDataWords] = useState <Word[]>();
+  const [dataWords, setDataWords] = useState <Word[]>([]);
   const pagesQuantity = 30;
   const [currentLevel, setCurrentLevel] = useState(1);
   const { currentPage, setCurrentPage } = usePaginator({
@@ -100,7 +100,7 @@ const TextbookPage: FC = () => {
 
   return (
     <Box>
-      <WaveForHeader />
+      <HeaderWave />
       <Box>
         <Flex m={5} gap={5} justifyContent="center">
           <Link to={`/audio-game/${currentLevel}/${currentPage}`}>

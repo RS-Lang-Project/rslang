@@ -15,8 +15,6 @@ const SprintMain: FC = () => {
   const word = 'Русское слово';
   const translate = 'translate';
 
-  // console.log(window.location.pathname);
-
   return (
     <Box color="white" h="90vh" p="100px 0 100px 0">
       <Center h="100%">
