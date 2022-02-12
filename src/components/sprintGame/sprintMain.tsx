@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useState, useEffect } from 'react';
 import {
   Box,
   Button,
@@ -12,15 +12,32 @@ import { Word } from '../../requests/requestTypes';
 
 interface Props {
   words: Array<Word> | [];
+  toResults: () => void;
+  trueAnswers: Array<number>;
+  setTrueAnswers: (arr: Array<number>) => void;
+  falseAnswers: Array<number>;
+  setFalseAnswers: (arr: Array<number>) => void;
 }
 
 const SprintMain: FC<Props> = (props) => {
-  const { words } = props;
+  const {
+    words,
+    toResults,
+    trueAnswers,
+    setTrueAnswers,
+    falseAnswers,
+    setFalseAnswers,
+  } = props;
   const [score, setScore] = useState(0);
   const [plusScore, setPlusScore] = useState(10);
   const [count, setCount] = useState(0);
   const [queue, setQueue] = useState(0);
   let isTrueAnswer = false;
+
+  useEffect(() => {
+    setTrueAnswers([]);
+    setFalseAnswers([]);
+  }, []);
 
   function getRandomIntInclusive(minimum: number, maximum: number) {
     const min = Math.ceil(minimum);
@@ -50,9 +67,11 @@ const SprintMain: FC<Props> = (props) => {
       } else {
         setQueue(queue + 1);
       }
+      setTrueAnswers([...trueAnswers, count]);
     } else {
       setQueue(0);
       setPlusScore(10);
+      setFalseAnswers([...falseAnswers, count]);
     }
 
     if (count >= words.length - 1) {
@@ -62,7 +81,7 @@ const SprintMain: FC<Props> = (props) => {
     }
   }
 
-  function checkFlseAnswer() {
+  function checkFalseAnswer() {
     if (!isTrueAnswer) {
       setScore(score + plusScore);
       if (queue >= 3) {
@@ -71,9 +90,11 @@ const SprintMain: FC<Props> = (props) => {
       } else {
         setQueue(queue + 1);
       }
+      setTrueAnswers([...trueAnswers, count]);
     } else {
       setQueue(0);
       setPlusScore(10);
+      setFalseAnswers([...falseAnswers, count]);
     }
 
     if (count >= words.length - 1) {
@@ -121,13 +142,13 @@ const SprintMain: FC<Props> = (props) => {
               <Button
                 colorScheme="red"
                 variant="solid"
-                onClick={() => checkFlseAnswer()}
+                onClick={() => checkFalseAnswer()}
               >
                 Неправильно
               </Button>
             </Flex>
           </Flex>
-          <Timer />
+          <Timer toResults={() => toResults()} />
         </Flex>
       </Center>
     </Box>

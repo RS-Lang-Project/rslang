@@ -5,6 +5,7 @@ import {
 } from '@chakra-ui/react';
 import SprintStart from '../components/sprintGame/sprintStart';
 import SprintMain from '../components/sprintGame/sprintMain';
+import Results from '../components/sprintGame/results';
 import { getAllWords } from '../requests/serverRequests';
 import { Word } from '../requests/requestTypes';
 
@@ -12,6 +13,8 @@ const SprintGamePage: FC = () => {
   const [page, setPage] = useState('start');
   const [isReady, setIsReady] = useState(false);
   const [words, setWords] = useState<Array<Word>>([]);
+  const [trueAnswers, setTrueAnswers] = useState<Array<number>>([]);
+  const [falseAnswers, setFalseAnswers] = useState<Array<number>>([]);
   let activeComponent;
 
   useEffect(() => {
@@ -29,7 +32,25 @@ const SprintGamePage: FC = () => {
   if (page === 'start') {
     activeComponent = <SprintStart isReady={isReady} toMain={() => setPage('main')} />;
   } else if (page === 'main') {
-    activeComponent = <SprintMain words={words} />;
+    activeComponent = (
+      <SprintMain
+        words={words}
+        toResults={() => setPage('results')}
+        trueAnswers={trueAnswers}
+        setTrueAnswers={(arr: Array<number>) => setTrueAnswers(arr)}
+        falseAnswers={falseAnswers}
+        setFalseAnswers={(arr: Array<number>) => setFalseAnswers(arr)}
+      />
+    );
+  } else if (page === 'results') {
+    activeComponent = (
+      <Results
+        toMain={() => setPage('main')}
+        trueAnswers={trueAnswers}
+        falseAnswers={falseAnswers}
+        words={words}
+      />
+    );
   }
 
   return (
