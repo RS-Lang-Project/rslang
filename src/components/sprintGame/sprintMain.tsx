@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useState, useEffect } from 'react';
 import {
   Box,
   Button,
@@ -8,12 +8,101 @@ import {
 } from '@chakra-ui/react';
 import Answers from './answers';
 import Timer from './timer';
+import { Word } from '../../requests/requestTypes';
 
-const SprintMain: FC = () => {
-  const score = 99;
-  const plusScore = 10;
-  const word = 'Русское слово';
-  const translate = 'translate';
+interface Props {
+  words: Array<Word> | [];
+  toResults: () => void;
+  trueAnswers: Array<number>;
+  setTrueAnswers: (arr: Array<number>) => void;
+  falseAnswers: Array<number>;
+  setFalseAnswers: (arr: Array<number>) => void;
+}
+
+const SprintMain: FC<Props> = (props) => {
+  const {
+    words,
+    toResults,
+    trueAnswers,
+    setTrueAnswers,
+    falseAnswers,
+    setFalseAnswers,
+  } = props;
+  const [score, setScore] = useState(0);
+  const [plusScore, setPlusScore] = useState(10);
+  const [count, setCount] = useState(0);
+  const [queue, setQueue] = useState(0);
+  let isTrueAnswer = false;
+
+  useEffect(() => {
+    setTrueAnswers([]);
+    setFalseAnswers([]);
+  }, []);
+
+  function getRandomIntInclusive(minimum: number, maximum: number) {
+    const min = Math.ceil(minimum);
+    const max = Math.floor(maximum);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  function getRandomTranslate() {
+    const roundArr = [count, getRandomIntInclusive(0, words.length - 1)];
+    let value;
+    if (getRandomIntInclusive(0, 1)) {
+      isTrueAnswer = true;
+      value = 0;
+    } else {
+      isTrueAnswer = false;
+      value = 1;
+    }
+    return roundArr[value];
+  }
+
+  function checkTrueAnswer() {
+    if (isTrueAnswer) {
+      setScore(score + plusScore);
+      if (queue >= 3) {
+        setQueue(1);
+        setPlusScore(plusScore + 10);
+      } else {
+        setQueue(queue + 1);
+      }
+      setTrueAnswers([...trueAnswers, count]);
+    } else {
+      setQueue(0);
+      setPlusScore(10);
+      setFalseAnswers([...falseAnswers, count]);
+    }
+
+    if (count >= words.length - 1) {
+      setCount(0);
+    } else {
+      setCount(count + 1);
+    }
+  }
+
+  function checkFalseAnswer() {
+    if (!isTrueAnswer) {
+      setScore(score + plusScore);
+      if (queue >= 3) {
+        setQueue(1);
+        setPlusScore(plusScore + 10);
+      } else {
+        setQueue(queue + 1);
+      }
+      setTrueAnswers([...trueAnswers, count]);
+    } else {
+      setQueue(0);
+      setPlusScore(10);
+      setFalseAnswers([...falseAnswers, count]);
+    }
+
+    if (count >= words.length - 1) {
+      setCount(0);
+    } else {
+      setCount(count + 1);
+    }
+  }
 
   return (
     <Box color="white" h="90vh" p="100px 0 100px 0">
@@ -27,7 +116,7 @@ const SprintMain: FC = () => {
             +
             {` ${plusScore}`}
           </Text>
-          <Answers />
+          <Answers queue={queue} />
           <Flex
             direction="column"
             background="white"
@@ -38,16 +127,28 @@ const SprintMain: FC = () => {
             minW="420px"
           >
             <Text fontSize="20px" color="#000" align="center">
-              {`${word} `}
+              {`${words[count]?.word} `}
               -
-              {` ${translate}`}
+              {` ${words[getRandomTranslate()]?.wordTranslate}`}
             </Text>
             <Flex m="15px auto 15px auto" w="300px" justifyContent="space-around">
-              <Button colorScheme="green" variant="solid">Правильно</Button>
-              <Button colorScheme="red" variant="solid">Неправильно</Button>
+              <Button
+                colorScheme="green"
+                variant="solid"
+                onClick={() => checkTrueAnswer()}
+              >
+                Правильно
+              </Button>
+              <Button
+                colorScheme="red"
+                variant="solid"
+                onClick={() => checkFalseAnswer()}
+              >
+                Неправильно
+              </Button>
             </Flex>
           </Flex>
-          <Timer />
+          <Timer toResults={() => toResults()} />
         </Flex>
       </Center>
     </Box>
