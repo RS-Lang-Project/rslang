@@ -1,6 +1,5 @@
 import { FC } from 'react';
 import { Link } from 'react-router-dom';
-
 import {
   Box,
   Stack,
@@ -17,6 +16,7 @@ import {
 import { HamburgerIcon, ChevronDownIcon } from '@chakra-ui/icons';
 import 'focus-visible/dist/focus-visible';
 import '../styles/App.css';
+import BtnSignIn from './BtnSignIn';
 
 const Header: FC = (props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -87,15 +87,7 @@ const Header: FC = (props) => {
             display={{ base: isOpen ? 'block' : 'none', md: 'block' }}
             mt={{ base: 4, md: 0 }}
           >
-            <Button
-              marginLeft="20"
-              variant="outline"
-              bg="yellow.300"
-              color="purple.800"
-              _hover={{ bg: 'yellow.200' }}
-            >
-              Вход
-            </Button>
+            <BtnSignIn />
           </Box>
         </Flex>
       </Container>
