@@ -9,7 +9,7 @@ import '../../styles/levels.css';
 const Levels: FC = () => (
   <Box m="20px" w="420px">
     <Flex justifyContent="space-around">
-      <Link to="/sprint-game/1/1">
+      <Link to="/audio-game/1/1">
         <Box
           className="sprint__round"
           cursor="pointer"
@@ -21,7 +21,7 @@ const Levels: FC = () => (
           A1
         </Box>
       </Link>
-      <Link to="/sprint-game/2/1">
+      <Link to="/audio-game/2/1">
         <Box
           className="sprint__round"
           cursor="pointer"
@@ -33,7 +33,7 @@ const Levels: FC = () => (
           A2
         </Box>
       </Link>
-      <Link to="/sprint-game/3/1">
+      <Link to="/audio-game/3/1">
         <Box
           className="sprint__round"
           cursor="pointer"
@@ -45,7 +45,7 @@ const Levels: FC = () => (
           B1
         </Box>
       </Link>
-      <Link to="/sprint-game/4/1">
+      <Link to="/audio-game/4/1">
         <Box
           className="sprint__round"
           cursor="pointer"
@@ -57,7 +57,7 @@ const Levels: FC = () => (
           B2
         </Box>
       </Link>
-      <Link to="/sprint-game/5/1">
+      <Link to="/audio-game/5/1">
         <Box
           className="sprint__round"
           cursor="pointer"
@@ -69,7 +69,7 @@ const Levels: FC = () => (
           C1
         </Box>
       </Link>
-      <Link to="/sprint-game/6/1">
+      <Link to="/audio-game/6/1">
         <Box
           className="sprint__round"
           cursor="pointer"

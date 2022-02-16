@@ -37,6 +37,16 @@ const SprintMain: FC<Props> = (props) => {
   useEffect(() => {
     setTrueAnswers([]);
     setFalseAnswers([]);
+    window.addEventListener('keydown', (e) => {
+      if (document.querySelector('.sprintBtns')) {
+        const btns: NodeListOf<HTMLButtonElement> = document.querySelectorAll('.sprintBtns');
+        if (e.code === 'ArrowLeft') {
+          btns[0].click();
+        } else if (e.code === 'ArrowRight') {
+          btns[1].click();
+        }
+      }
+    });
   }, []);
 
   function getRandomIntInclusive(minimum: number, maximum: number) {
@@ -105,11 +115,11 @@ const SprintMain: FC<Props> = (props) => {
   }
 
   return (
-    <Box color="white" h="90vh" p="100px 0 100px 0">
+    <Box color="white" h="100vh" p="100px 0 100px 0">
       <Center h="100%">
         <Flex direction="column" align="center">
           <Text fontWeight="bold" fontSize="32px">
-            You score:
+            Ваш результат:
             {` ${score}`}
           </Text>
           <Text mt="5px" fontWeight="bold" fontSize="28px">
@@ -133,6 +143,7 @@ const SprintMain: FC<Props> = (props) => {
             </Text>
             <Flex m="15px auto 15px auto" w="300px" justifyContent="space-around">
               <Button
+                className="sprintBtns"
                 colorScheme="green"
                 variant="solid"
                 onClick={() => checkTrueAnswer()}
@@ -140,6 +151,7 @@ const SprintMain: FC<Props> = (props) => {
                 Правильно
               </Button>
               <Button
+                className="sprintBtns"
                 colorScheme="red"
                 variant="solid"
                 onClick={() => checkFalseAnswer()}

@@ -14,7 +14,7 @@ interface Props {
   isReady: boolean;
 }
 
-const SprintStart: FC<Props> = (props) => {
+const AudioStart: FC<Props> = (props) => {
   const { toMain, isReady } = props;
   let startBtn;
 
@@ -44,13 +44,13 @@ const SprintStart: FC<Props> = (props) => {
       <Center h="100%">
         <Flex direction="column" align="center">
           <Heading as="h2">
-            Спринт
+            Аудиовызов
           </Heading>
           <Text m="15px" fontSize="20px">
             Возможно тут будет какой-то текст...
           </Text>
           {startBtn}
-          <Link to="/sprint">
+          <Link to="/audio">
             <Button
               mt="15px"
               colorScheme="purple"
@@ -65,4 +65,4 @@ const SprintStart: FC<Props> = (props) => {
   );
 };
 
-export default SprintStart;
+export default AudioStart;
