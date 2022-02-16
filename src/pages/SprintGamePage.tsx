@@ -2,10 +2,13 @@ import { FC, useState, useEffect } from 'react';
 import {
   Box,
   Container,
+  Image,
 } from '@chakra-ui/react';
 import SprintStart from '../components/sprintGame/sprintStart';
 import SprintMain from '../components/sprintGame/sprintMain';
 import Results from '../components/sprintGame/results';
+import fullScreen from '../assets/svg/fullScreen.svg';
+import '../styles/fullScreen.css';
 import { getAllWords } from '../requests/serverRequests';
 import { Word } from '../requests/requestTypes';
 
@@ -15,6 +18,7 @@ const SprintGamePage: FC = () => {
   const [words, setWords] = useState<Array<Word>>([]);
   const [trueAnswers, setTrueAnswers] = useState<Array<number>>([]);
   const [falseAnswers, setFalseAnswers] = useState<Array<number>>([]);
+  const [full, setFull] = useState(false);
   let activeComponent;
 
   useEffect(() => {
@@ -54,8 +58,25 @@ const SprintGamePage: FC = () => {
   }
 
   return (
-    <Box overflow="hidden" bg="linear-gradient(rgb(127, 83, 172) 0%,rgb(100, 125, 238) 100%)">
-      <Container maxWidth="container.xl">
+    <Box
+      className={full ? 'fullPage' : ''}
+      overflow="hidden"
+      bg="linear-gradient(rgb(127, 83, 172) 0%,rgb(100, 125, 238) 100%)"
+    >
+      <Container maxWidth="container.xl" position="relative">
+        <Image
+          cursor="pointer"
+          w="32px"
+          h="32px"
+          src={`${fullScreen}`}
+          position="absolute"
+          top="20px"
+          right="20px"
+          className="fullScreen__trigger"
+          onClick={() => {
+            setFull(() => !full);
+          }}
+        />
         {activeComponent}
       </Container>
     </Box>

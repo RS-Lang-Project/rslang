@@ -24,12 +24,10 @@ interface Props {
 const Results: FC<Props> = (props) => {
   const {
     toMain,
+    trueAnswers,
     falseAnswers,
     words,
   } = props;
-  let { trueAnswers } = props;
-
-  trueAnswers = trueAnswers.filter((num: number) => falseAnswers.indexOf(num) === -1);
 
   const truAnswersElements: Array<JSX.Element> = Array.from(new Set(trueAnswers)).map((index: number) => (
     <ListItem cursor="pointer" key={index}>
@@ -71,7 +69,7 @@ const Results: FC<Props> = (props) => {
             >
               Играть снова
             </Button>
-            <Link to="/sprint">
+            <Link to="/audio">
               <Button m="5px" colorScheme="purple" size="md">
                 Изменить уровень
               </Button>

@@ -12,7 +12,7 @@ import Levels from '../components/sprintGame/levels';
 const SprintPromoPage: FC = () => (
   <Box overflow="hidden" bg="linear-gradient(rgb(127, 83, 172) 0%,rgb(100, 125, 238) 100%)">
     <Container maxWidth="container.xl">
-      <Box color="white" h="90vh" p="100px 0 100px 0">
+      <Box color="white" h="100vh" p="100px 0 100px 0">
         <Center h="100%">
           <Flex m="0 auto 0 auto" direction="column" w="576px" align="center">
             <Heading m="0 0 20px 0" fontSize="42px" as="h2" size="lg">
