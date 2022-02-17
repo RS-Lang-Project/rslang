@@ -30,6 +30,21 @@ const TextbookPage: FC = () => {
     initialState: { currentPage: 1 },
   });
 
+  const hasToken = localStorage.getItem('userToken');
+  let token = '';
+  let author = false;
+  if (hasToken && hasToken !== '') {
+    token = hasToken;
+    author = true;
+  }
+  const [isAuthorization, setAuthorization] = useState<boolean>(author);
+  const [userToken, setUserToken] = useState<string>(token);
+
+  // window.addEventListener('beforeunload', function() {
+  //   localStorage.setItem('currentPage', currentPage);
+  //   localStorage.setItem('currentLevel', currentLevel);
+  // })
+
   const levelsArr = [
     {
       id: '1',
@@ -63,9 +78,16 @@ const TextbookPage: FC = () => {
     },
   ];
 
+  const openDifficultWords = () => {
+    setCurrentLevel(7);
+    setDataWords([]);
+  };
+
   useEffect(() => {
-    getAllWords(currentLevel - 1, currentPage - 1)
-      .then((data: Array<Word>) => setDataWords(data));
+    if (currentLevel !== 7) {
+      getAllWords(currentLevel - 1, currentPage - 1)
+        .then((data: Array<Word>) => setDataWords(data));
+    }
   }, [currentPage, currentLevel]);
 
   function changeLevel(id: string) {
@@ -130,22 +152,40 @@ const TextbookPage: FC = () => {
             </Box>
           </Link>
         </Flex>
-        <Flex justifyContent="center" gap="20px" alignItems="center" flexWrap="wrap">
-          <Heading fontSize="2xl" color="purple.800">Levels</Heading>
-          {levelsArr.map((p) => (
-            <Button
-              key={p.id}
-              background={p.color}
-              border="2px solid #fff"
-              borderRadius="50%"
-              p="12px 10px"
-              color="white"
-              _hover={{ background: 'purple.800' }}
-              onClick={() => changeLevel(p.id)}
-            >
-              {p.text}
-            </Button>
-          ))}
+        <Flex justifyContent="center" gap="200px" alignItems="center" flexWrap="wrap">
+          <Flex alignItems="center" gap="20px">
+            <Heading fontSize="2xl" color="purple.800">Уровни</Heading>
+            {levelsArr.map((p) => (
+              <Button
+                key={p.id}
+                background={(+currentLevel === +p.id) ? p.color : 'gray'}
+                border={`2px solid ${p.color}`}
+                borderRadius="50%"
+                p="12px 10px"
+                color="white"
+                _hover={{ background: 'purple.800' }}
+                onClick={() => changeLevel(p.id)}
+              >
+                {p.text}
+              </Button>
+            ))}
+          </Flex>
+          {isAuthorization
+            ? (
+              <Box>
+                <Button
+                  p="12px 10px"
+                  color="purple.800"
+                  background="transparent"
+                  _hover={{ color: 'purple.700', textDecoration: 'underline' }}
+                  onClick={() => openDifficultWords()}
+                >
+                  Сложные слова
+                </Button>
+              </Box>
+            ) : (
+              < > </>
+            )}
         </Flex>
         <List
           items={dataWords}
@@ -156,26 +196,31 @@ const TextbookPage: FC = () => {
             />
           )}
         />
-        <Paginator
-          activeStyles={activeStyles}
-          normalStyles={normalStyles}
-          separatorStyles={separatorStyles}
-          pagesQuantity={pagesQuantity}
-          currentPage={currentPage}
-          onPageChange={setCurrentPage}
-          outerLimit={outerLimit}
-          innerLimit={innerLimit}
-        >
-          <Container align="center" justify="center" w="full" p={4} gap="20px">
-            <Previous>
-              <CgChevronLeft />
-            </Previous>
-            <PageGroup isInline align="center" />
-            <Next>
-              <CgChevronRight />
-            </Next>
-          </Container>
-        </Paginator>
+        {currentLevel !== 7
+          ? (
+            <Paginator
+              activeStyles={activeStyles}
+              normalStyles={normalStyles}
+              separatorStyles={separatorStyles}
+              pagesQuantity={pagesQuantity}
+              currentPage={currentPage}
+              onPageChange={setCurrentPage}
+              outerLimit={outerLimit}
+              innerLimit={innerLimit}
+            >
+              <Container align="center" justify="center" w="full" p={4} gap="20px">
+                <Previous>
+                  <CgChevronLeft />
+                </Previous>
+                <PageGroup isInline align="center" />
+                <Next>
+                  <CgChevronRight />
+                </Next>
+              </Container>
+            </Paginator>
+          ) : (
+            < > </>
+          )}
       </Box>
       <Footer />
     </Box>
