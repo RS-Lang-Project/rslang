@@ -24,6 +24,7 @@ import { getAllWords, getAllUserAggregatedWords } from '../requests/serverReques
 
 const TextbookPage: FC = () => {
   const [dataWords, setDataWords] = useState <Word[]>([]);
+  const [dataAgrigatedWords, setDataAgrigatedWords] = useState <Word[]>([]);
   const pagesQuantity = 30;
   const hasPage = localStorage.getItem('currentPage');
   const hasLevel = localStorage.getItem('currentLevel');
@@ -96,9 +97,14 @@ const TextbookPage: FC = () => {
   const openDifficultWords = () => {
     setCurrentLevel(7);
     setDataWords([]);
-    getAllUserAggregatedWords(userId, token, '1', '1', '20', 'filter')
+    getAllUserAggregatedWords(userId, userToken, '1', '1', '20', 'filter')
       .then((data: Array<Word>) => console.log(data));
   };
+
+  useEffect(() => {
+    getAllUserAggregatedWords(userId, userToken, currentLevel.toString(), currentPage.toString(), '20')
+      .then((data: Array<Word>) => setDataAgrigatedWords(data));
+  }, []);
 
   useEffect(() => {
     if (currentLevel !== 7) {
@@ -210,6 +216,7 @@ const TextbookPage: FC = () => {
             <CardWord
               key={word.id}
               wordDate={word}
+              agrigatedWords={dataAgrigatedWords}
             />
           )}
         />

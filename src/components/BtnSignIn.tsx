@@ -92,6 +92,7 @@ const BtnSignIn = () => {
       .then((data: SignInResult) => {
         setUserToken(data.token);
         localStorage.setItem('userId', data.userId);
+
         onClose();
         setAuthorization(true);
         window.location.reload();
@@ -156,12 +157,12 @@ const BtnSignIn = () => {
                   <Stack spacing={4}>
                     <FormControl id="email">
                       <FormLabel>Email</FormLabel>
-                      <Input type="email" />
+                      <Input type="email" onChange={handleChangeEmail} />
                     </FormControl>
                     <FormControl id="password">
                       <FormLabel>Пароль</FormLabel>
                       <InputGroup>
-                        <Input type={showPassword ? 'text' : 'password'} />
+                        <Input type={showPassword ? 'text' : 'password'} onChange={handleChangePassword} />
                         <InputRightElement h="full">
                           <Button
                             variant="ghost"
