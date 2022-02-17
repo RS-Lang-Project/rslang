@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useState, useEffect } from 'react';
 import { Tooltip } from '@material-ui/core';
 import {
   Box,
@@ -11,15 +11,17 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { StarIcon, CheckIcon } from '@chakra-ui/icons';
-import { Word } from '../requests/requestTypes';
-import { MAIN_LINK } from '../requests/serverRequests';
+import { Word, UserWord } from '../requests/requestTypes';
+import { MAIN_LINK, getUserWords, createUserWord, getUserAggregatedWords } from '../requests/serverRequests';
 import headphones from '../assets/svg/headphones.svg';
 
 interface CardWordProps {
-  wordDate: Word
+  wordDate: Word,
+  agrigatedWords: Word[]
 }
 
-const CardWord: FC<CardWordProps> = ({ wordDate }) => {
+const CardWord: FC<CardWordProps> = ({ wordDate, agrigatedWords }) => {
+  const [isAgrigate, setIsAgrigate] = useState<boolean>(agrigatedWords.map((item) => item.id).includes(wordDate.id));
   const hasToken = localStorage.getItem('userToken');
   let token = '';
   let author = false;
@@ -27,17 +29,40 @@ const CardWord: FC<CardWordProps> = ({ wordDate }) => {
     token = hasToken;
     author = true;
   }
+  const [hasWord, setHasWord] = useState<boolean>(false);
   const [isAuthorization, setAuthorization] = useState<boolean>(author);
   const [userToken, setUserToken] = useState<string>(token);
+  const hasId = localStorage.getItem('userId');
+  let idUser = '';
+  if (hasId && hasId !== '') {
+    idUser = hasId;
+  }
+  const [userId, setUserId] = useState<string>(idUser);
 
   let isPlay = false;
   const [isDifficult, setIsDifficult] = useState(false);
   const [isLearned, setIsLearned] = useState(false);
 
+  useEffect(() => {
+    if (isAgrigate) {
+      // getUserAggregatedWords(userId, wordDate.id, userToken)
+      //   .then((data: Word) => console.log(data));
+      // console.log('work')
+    }
+  }, [isAgrigate]);
+
   const addToDifficult = () => {
     if (isDifficult) {
       setIsDifficult(false);
     } else {
+      if (!isAgrigate) {
+        createUserWord({
+          difficulty: 'hard',
+          optional: {},
+        }, userId, wordDate.id, userToken)
+          .then((data: UserWord) => console.log(data));
+      }
+      setIsAgrigate(true);
       setIsDifficult(true);
       setIsLearned(false);
     }
@@ -47,6 +72,7 @@ const CardWord: FC<CardWordProps> = ({ wordDate }) => {
     if (isLearned) {
       setIsLearned(false);
     } else {
+      setIsAgrigate(true);
       setIsLearned(true);
       setIsDifficult(false);
     }
