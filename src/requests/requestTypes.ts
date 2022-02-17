@@ -41,6 +41,8 @@ export interface GetNewUserTokens {
 }
 
 export interface UserWord {
+  id?: string,
+  wordId?: string,
   difficulty: string,
   optional: object
 }
