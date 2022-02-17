@@ -12,7 +12,12 @@ import {
 } from '@chakra-ui/react';
 import { StarIcon, CheckIcon } from '@chakra-ui/icons';
 import { Word, UserWord } from '../requests/requestTypes';
-import { MAIN_LINK, getUserWords, createUserWord, getUserAggregatedWords } from '../requests/serverRequests';
+import {
+  MAIN_LINK,
+  getUserWords,
+  createUserWord,
+  getUserAggregatedWords,
+} from '../requests/serverRequests';
 import headphones from '../assets/svg/headphones.svg';
 
 interface CardWordProps {
@@ -58,7 +63,11 @@ const CardWord: FC<CardWordProps> = ({ wordDate, agrigatedWords }) => {
       if (!isAgrigate) {
         createUserWord({
           difficulty: 'hard',
-          optional: {},
+          optional: {
+            trueAnswers: 0,
+            falseAnswers: 0,
+            learnedCount: 0,
+          },
         }, userId, wordDate.id, userToken)
           .then((data: UserWord) => console.log(data));
       }

@@ -42,7 +42,11 @@ export interface GetNewUserTokens {
 
 export interface UserWord {
   difficulty: string,
-  optional: object
+  optional: {
+    trueAnswers: number,
+    falseAnswers: number,
+    learnedCount: number,
+  },
 }
 
 export interface Statistik{

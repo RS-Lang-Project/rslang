@@ -37,7 +37,8 @@ const SprintMain: FC<Props> = (props) => {
   useEffect(() => {
     setTrueAnswers([]);
     setFalseAnswers([]);
-    window.addEventListener('keydown', (e) => {
+
+    const handleKeyDown = (e: KeyboardEvent) => {
       if (document.querySelector('.sprintBtns')) {
         const btns: NodeListOf<HTMLButtonElement> = document.querySelectorAll('.sprintBtns');
         if (e.code === 'ArrowLeft') {
@@ -46,7 +47,13 @@ const SprintMain: FC<Props> = (props) => {
           btns[1].click();
         }
       }
-    });
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
   }, []);
 
   function getRandomIntInclusive(minimum: number, maximum: number) {
