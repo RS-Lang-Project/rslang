@@ -39,9 +39,7 @@ const BtnSignIn = () => {
     author = true;
   }
   const [isAuthorization, setAuthorization] = useState<boolean>(author);
-
   const [userToken, setUserToken] = useState<string>(token);
-
   useEffect(() => {
     localStorage.setItem('userToken', userToken);
   }, [userToken]);
@@ -93,7 +91,7 @@ const BtnSignIn = () => {
     signInRequest({ email, password })
       .then((data: SignInResult) => {
         setUserToken(data.token);
-        console.log(data.token);
+        localStorage.setItem('userId', data.userId);
         onClose();
         setAuthorization(true);
         window.location.reload();
