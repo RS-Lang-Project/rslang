@@ -39,6 +39,7 @@ const CardWord: FC<CardWordProps> = ({ wordDate }) => {
       setIsDifficult(false);
     } else {
       setIsDifficult(true);
+      setIsLearned(false);
     }
   };
 
@@ -47,6 +48,7 @@ const CardWord: FC<CardWordProps> = ({ wordDate }) => {
       setIsLearned(false);
     } else {
       setIsLearned(true);
+      setIsDifficult(false);
     }
   };
 

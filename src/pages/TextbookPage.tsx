@@ -20,14 +20,24 @@ import { ReactComponent as HeaderWave } from '../assets/svg/HeaderWave.svg';
 import List from '../components/List';
 import { Word } from '../requests/requestTypes';
 import CardWord from '../components/CardWord';
-import { getAllWords } from '../requests/serverRequests';
+import { getAllWords, getAllUserAggregatedWords } from '../requests/serverRequests';
 
 const TextbookPage: FC = () => {
   const [dataWords, setDataWords] = useState <Word[]>([]);
   const pagesQuantity = 30;
-  const [currentLevel, setCurrentLevel] = useState(1);
+  const hasPage = localStorage.getItem('currentPage');
+  const hasLevel = localStorage.getItem('currentLevel');
+  let page = 1;
+  if (hasPage && hasPage !== '') {
+    page = +hasPage;
+  }
+  let level = 1;
+  if (hasLevel && hasLevel !== '') {
+    level = +hasLevel;
+  }
+  const [currentLevel, setCurrentLevel] = useState(level);
   const { currentPage, setCurrentPage } = usePaginator({
-    initialState: { currentPage: 1 },
+    initialState: { currentPage: page },
   });
 
   const hasToken = localStorage.getItem('userToken');
@@ -39,11 +49,16 @@ const TextbookPage: FC = () => {
   }
   const [isAuthorization, setAuthorization] = useState<boolean>(author);
   const [userToken, setUserToken] = useState<string>(token);
-
-  // window.addEventListener('beforeunload', function() {
-  //   localStorage.setItem('currentPage', currentPage);
-  //   localStorage.setItem('currentLevel', currentLevel);
-  // })
+  const hasId = localStorage.getItem('userId');
+  let idUser = '';
+  if (hasId && hasId !== '') {
+    idUser = hasId;
+  }
+  const [userId, setUserId] = useState<string>(idUser);
+  window.addEventListener('beforeunload', () => {
+    localStorage.setItem('currentPage', currentPage.toString());
+    localStorage.setItem('currentLevel', currentLevel.toString());
+  });
 
   const levelsArr = [
     {
@@ -81,6 +96,8 @@ const TextbookPage: FC = () => {
   const openDifficultWords = () => {
     setCurrentLevel(7);
     setDataWords([]);
+    getAllUserAggregatedWords(userId, token, '1', '1', '20', 'filter')
+      .then((data: Array<Word>) => console.log(data));
   };
 
   useEffect(() => {
