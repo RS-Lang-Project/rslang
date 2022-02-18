@@ -18,29 +18,19 @@ import { CgChevronLeft, CgChevronRight } from 'react-icons/cg';
 import Footer from '../components/Footer';
 import { ReactComponent as HeaderWave } from '../assets/svg/HeaderWave.svg';
 import List from '../components/List';
-import { Word } from '../requests/requestTypes';
+import { Word, UserWord } from '../requests/requestTypes';
 import CardWord from '../components/CardWord';
-import { getAllWords, getAllUserAggregatedWords } from '../requests/serverRequests';
+import { getAllWords, getAllUserWords, getWord } from '../requests/serverRequests';
+import {
+  levelsArr,
+  normalStyles,
+  activeStyles,
+  separatorStyles,
+} from '../components/textbookData';
 
 const TextbookPage: FC = () => {
   const [dataWords, setDataWords] = useState <Word[]>([]);
-  const [dataAgrigatedWords, setDataAgrigatedWords] = useState <Word[]>([]);
   const pagesQuantity = 30;
-  const hasPage = localStorage.getItem('currentPage');
-  const hasLevel = localStorage.getItem('currentLevel');
-  let page = 1;
-  if (hasPage && hasPage !== '') {
-    page = +hasPage;
-  }
-  let level = 1;
-  if (hasLevel && hasLevel !== '') {
-    level = +hasLevel;
-  }
-  const [currentLevel, setCurrentLevel] = useState(level);
-  const { currentPage, setCurrentPage } = usePaginator({
-    initialState: { currentPage: page },
-  });
-
   const hasToken = localStorage.getItem('userToken');
   let token = '';
   let author = false;
@@ -48,97 +38,56 @@ const TextbookPage: FC = () => {
     token = hasToken;
     author = true;
   }
-  const [isAuthorization, setAuthorization] = useState<boolean>(author);
-  const [userToken, setUserToken] = useState<string>(token);
+  const [isAuthorization] = useState<boolean>(author);
+  const [userToken] = useState<string>(token);
   const hasId = localStorage.getItem('userId');
   let idUser = '';
   if (hasId && hasId !== '') {
     idUser = hasId;
   }
-  const [userId, setUserId] = useState<string>(idUser);
-  window.addEventListener('beforeunload', () => {
-    localStorage.setItem('currentPage', currentPage.toString());
-    localStorage.setItem('currentLevel', currentLevel.toString());
+  const [userId] = useState<string>(idUser);
+  const hasPage = localStorage.getItem('currentPage');
+  let page = 1;
+  if (hasPage && hasPage !== '') {
+    page = +hasPage;
+  }
+  let level = localStorage.getItem('currentLevel');
+  if (!level) {
+    level = '1';
+  }
+  const [currentLevel, setCurrentLevel] = useState(+level);
+  const { currentPage, setCurrentPage } = usePaginator({
+    initialState: { currentPage: page },
   });
 
-  const levelsArr = [
-    {
-      id: '1',
-      color: 'green.400',
-      text: 'A1',
-    },
-    {
-      id: '2',
-      color: 'green.500',
-      text: 'A2',
-    },
-    {
-      id: '3',
-      color: 'yellow.400',
-      text: 'B1',
-    },
-    {
-      id: '4',
-      color: 'yellow.500',
-      text: 'B2',
-    },
-    {
-      id: '5',
-      color: 'red.400',
-      text: 'C1',
-    },
-    {
-      id: '6',
-      color: 'red.500',
-      text: 'C2',
-    },
-  ];
-
-  const openDifficultWords = () => {
-    setCurrentLevel(7);
-    setDataWords([]);
-    getAllUserAggregatedWords(userId, userToken, '1', '1', '20', 'filter')
-      .then((data: Array<Word>) => console.log(data));
-  };
-
-  useEffect(() => {
-    getAllUserAggregatedWords(userId, userToken, currentLevel.toString(), currentPage.toString(), '20')
-      .then((data: Array<Word>) => setDataAgrigatedWords(data));
-  }, []);
+  window.addEventListener('beforeunload', () => {
+    localStorage.setItem('currentLevel', currentLevel.toString());
+    localStorage.setItem('currentPage', currentPage.toString());
+  });
 
   useEffect(() => {
     if (currentLevel !== 7) {
       getAllWords(currentLevel - 1, currentPage - 1)
         .then((data: Array<Word>) => setDataWords(data));
+    } else {
+      getAllUserWords(userId, userToken)
+        .then(((data: Array<UserWord>) => {
+          const allPromises = data.filter((item) => item.difficulty === 'hard').map((item) => {
+            let word = '';
+            if (item.wordId) word = item.wordId;
+            return getWord(word);
+          });
+          Promise.all(allPromises).then((values) => {
+            setDataWords(values);
+          });
+        }));
     }
-  }, [currentPage, currentLevel]);
+  }, [currentPage, currentLevel, userId, userToken]);
 
   function changeLevel(id: string) {
     setCurrentLevel(+id);
     setCurrentPage(1);
   }
-
-  const normalStyles = {
-    w: 7,
-    bg: 'grey.200',
-    fontSize: 'sm',
-    boxShadow: 'base',
-    _hover: {
-      bg: 'yellow.300',
-    },
-  };
-  const activeStyles = {
-    w: 7,
-    bg: 'yellow.300',
-    fontSize: 'sm',
-    _hover: {
-      bg: 'yellow.500',
-    },
-  };
-  const separatorStyles = {
-    w: 7,
-    bg: 'yellow.300',
-  };
 
   const outerLimit = 3;
   const innerLimit = 3;
@@ -175,18 +124,23 @@ const TextbookPage: FC = () => {
             </Box>
           </Link>
         </Flex>
-        <Flex justifyContent="center" gap="200px" alignItems="center" flexWrap="wrap">
-          <Flex alignItems="center" gap="20px">
-            <Heading fontSize="2xl" color="purple.800">Уровни</Heading>
+        <Flex
+          justifyContent="center"
+          flexDirection={{ sm: 'column', md: 'row' }}
+          alignItems="center"
+          flexWrap="wrap"
+          gap={{ sm: '20px', md: '170px' }}
+        >
+          <Flex alignItems="center" gap={{ sm: '10px', md: '20px' }}>
+            <Heading fontSize="2xl" color="purple.800">Levels</Heading>
             {levelsArr.map((p) => (
               <Button
                 key={p.id}
-                background={(+currentLevel === +p.id) ? p.color : 'gray'}
-                border={`2px solid ${p.color}`}
+                background={+currentLevel === +p.id ? p.color : 'gray'}
                 borderRadius="50%"
                 p="12px 10px"
                 color="white"
-                _hover={{ background: 'purple.800' }}
+                _hover={{ background: p.color }}
                 onClick={() => changeLevel(p.id)}
               >
                 {p.text}
@@ -195,17 +149,17 @@ const TextbookPage: FC = () => {
           </Flex>
           {isAuthorization
             ? (
-              <Box>
-                <Button
-                  p="12px 10px"
-                  color="purple.800"
-                  background="transparent"
-                  _hover={{ color: 'purple.700', textDecoration: 'underline' }}
-                  onClick={() => openDifficultWords()}
-                >
-                  Сложные слова
-                </Button>
-              </Box>
+              <Button
+                fontSize="xl"
+                p="12px 10px"
+                color="purple.800"
+                background="transparent"
+                textDecoration={+currentLevel === 7 ? 'underline' : 'none'}
+                _hover={{ textDecoration: 'underline' }}
+                onClick={() => changeLevel('7')}
+              >
+                Сложные слова
+              </Button>
             ) : (
               < > </>
             )}
@@ -216,7 +170,6 @@ const TextbookPage: FC = () => {
             <CardWord
               key={word.id}
               wordDate={word}
-              agrigatedWords={dataAgrigatedWords}
             />
           )}
         />
