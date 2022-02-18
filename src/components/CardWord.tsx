@@ -84,12 +84,20 @@ const CardWord: FC<CardWordProps> = ({ wordDate }) => {
       if (!isAgrigate) {
         createUserWord({
           difficulty: 'hard',
-          optional: {},
+          optional: {
+            trueAnswers: 0,
+            falseAnswers: 0,
+            learnedCount: 0,
+          },
         }, userId, wordDate.id, userToken);
       } else {
         updateUserWord({
           difficulty: 'hard',
-          optional: {},
+          optional: {
+            trueAnswers: 0,
+            falseAnswers: 0,
+            learnedCount: 0,
+          },
         }, userId, wordDate.id, userToken);
       }
       setIsAgrigate(true);

@@ -44,7 +44,11 @@ export interface UserWord {
   id?: string,
   wordId?: string,
   difficulty: string,
-  optional: object
+  optional: {
+    trueAnswers: number,
+    falseAnswers: number,
+    learnedCount: number,
+  },
 }
 
 export interface Statistik{

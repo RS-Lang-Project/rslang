@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Flex,
@@ -12,7 +12,13 @@ import {
 } from '@chakra-ui/react';
 import { ReactComponent as headphones } from '../../assets/svg/headphones.svg';
 import { Word } from '../../requests/requestTypes';
-import { MAIN_LINK } from '../../requests/serverRequests';
+import {
+  MAIN_LINK,
+  getUser,
+  getUserWords,
+  createUserWord,
+  updateUserWord,
+} from '../../requests/serverRequests';
 
 interface Props {
   toMain: () => void;
@@ -54,6 +60,97 @@ const Results: FC<Props> = (props) => {
       {words[index].wordTranslate}
     </ListItem>
   ));
+
+  useEffect(() => {
+    if (localStorage.getItem('userId') && localStorage.getItem('userToken')) {
+      const id = `${localStorage.getItem('userId')}`;
+      const token = `${localStorage.getItem('userToken')}`;
+      getUser(id, token)
+        .then(() => {
+          Array.from(new Set(trueAnswers)).forEach((index) => {
+            getUserWords(
+              id,
+              words[index].id,
+              token,
+            )
+              .then((word) => {
+                const params = {
+                  difficulty: 'hard',
+                  optional: {
+                    trueAnswers: word.optional.trueAnswers + 1,
+                    falseAnswers: word.optional.falseAnswers,
+                    learnedCount: word.optional.learnedCount + 1,
+                  },
+                };
+                if (params.optional.learnedCount > 2) {
+                  params.difficulty = 'easy';
+                }
+                updateUserWord(
+                  params,
+                  id,
+                  words[index].id,
+                  token,
+                );
+              })
+              .catch((e) => {
+                createUserWord(
+                  {
+                    difficulty: 'hard',
+                    optional: {
+                      trueAnswers: 0,
+                      falseAnswers: 0,
+                      learnedCount: 0,
+                    },
+                  },
+                  id,
+                  words[index].id,
+                  token,
+                );
+              });
+          });
+
+          Array.from(new Set(falseAnswers)).forEach((index) => {
+            getUserWords(
+              id,
+              words[index].id,
+              token,
+            )
+              .then((word) => {
+                const params = {
+                  difficulty: 'hard',
+                  optional: {
+                    trueAnswers: word.optional.trueAnswers,
+                    falseAnswers: word.optional.falseAnswers + 1,
+                    learnedCount: 0,
+                  },
+                };
+
+                updateUserWord(
+                  params,
+                  id,
+                  words[index].id,
+                  token,
+                );
+              })
+              .catch((e) => {
+                createUserWord(
+                  {
+                    difficulty: 'hard',
+                    optional: {
+                      trueAnswers: 0,
+                      falseAnswers: 0,
+                      learnedCount: 0,
+                    },
+                  },
+                  id,
+                  words[index].id,
+                  token,
+                );
+              });
+          });
+        });
+    }
+  }, []);
 
   return (
     <Box color="black" h="100vh" p="100px 0 100px 0">

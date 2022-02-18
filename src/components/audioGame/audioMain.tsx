@@ -38,7 +38,8 @@ const AudioMain: FC<Props> = (props) => {
   useEffect(() => {
     setTrueAnswers([]);
     setFalseAnswers([]);
-    window.addEventListener('keydown', (e) => {
+
+    const handleKeyDown = (e: KeyboardEvent) => {
       if (document.querySelector('.audioBtns')) {
         const btns: NodeListOf<HTMLButtonElement> = document.querySelectorAll('.audioBtns');
         if (e.code === 'Digit1') {
@@ -53,7 +54,13 @@ const AudioMain: FC<Props> = (props) => {
           (document.querySelector('.dontKnow') as HTMLButtonElement).click();
         }
       }
-    });
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
   }, []);
 
   useEffect(() => {
