@@ -20,6 +20,7 @@ interface Props {
   setTrueAnswers: (arr: Array<number>) => void;
   falseAnswers: Array<number>;
   setFalseAnswers: (arr: Array<number>) => void;
+  setBestResult: (n: number) => void;
 }
 
 const AudioMain: FC<Props> = (props) => {
@@ -30,10 +31,13 @@ const AudioMain: FC<Props> = (props) => {
     setTrueAnswers,
     falseAnswers,
     setFalseAnswers,
+    setBestResult,
   } = props;
   const [count, setCount] = useState(0);
   const [answers, setAnswers] = useState(createRandomArray(3, 0, words.length, count));
   const [CheckYourAnswer, setCheckYourAnswer] = useState<JSX.Element | null>(null);
+  const [сounter, setCounter] = useState(0);
+  const [bestCounter, setBestCounter] = useState(0);
 
   useEffect(() => {
     setTrueAnswers([]);
@@ -86,6 +90,7 @@ const AudioMain: FC<Props> = (props) => {
 
   function nextQuestion() {
     if (count >= words.length - 1) {
+      setBestResult(bestCounter);
       toResults();
     } else {
       setCount(count + 1);
@@ -100,6 +105,10 @@ const AudioMain: FC<Props> = (props) => {
         </Text>
       ));
       setTrueAnswers([...trueAnswers, count]);
+      setCounter(сounter + 1);
+      if (сounter >= bestCounter) {
+        setBestCounter(сounter);
+      }
     } else {
       setCheckYourAnswer((
         <Text m="5px" fontWeight="bold" color="red">
@@ -107,6 +116,10 @@ const AudioMain: FC<Props> = (props) => {
         </Text>
       ));
       setFalseAnswers([...falseAnswers, count]);
+      if (сounter >= bestCounter) {
+        setBestCounter(сounter);
+      }
+      setCounter(0);
     }
 
     nextQuestion();

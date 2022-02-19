@@ -17,6 +17,7 @@ interface Props {
   setTrueAnswers: (arr: Array<number>) => void;
   falseAnswers: Array<number>;
   setFalseAnswers: (arr: Array<number>) => void;
+  setBestResult: (n: number) => void;
 }
 
 const SprintMain: FC<Props> = (props) => {
@@ -27,16 +28,21 @@ const SprintMain: FC<Props> = (props) => {
     setTrueAnswers,
     falseAnswers,
     setFalseAnswers,
+    setBestResult,
   } = props;
   const [score, setScore] = useState(0);
   const [plusScore, setPlusScore] = useState(10);
   const [count, setCount] = useState(0);
   const [queue, setQueue] = useState(0);
+  const [сounter, setCounter] = useState(0);
+  const [bestCounter, setBestCounter] = useState(0);
   let isTrueAnswer = false;
 
   useEffect(() => {
     setTrueAnswers([]);
     setFalseAnswers([]);
+    setCounter(0);
+    setBestResult(0);
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (document.querySelector('.sprintBtns')) {
@@ -85,10 +91,18 @@ const SprintMain: FC<Props> = (props) => {
         setQueue(queue + 1);
       }
       setTrueAnswers([...trueAnswers, count]);
+      setCounter(сounter + 1);
+      if (сounter >= bestCounter) {
+        setBestCounter(сounter);
+      }
     } else {
       setQueue(0);
       setPlusScore(10);
       setFalseAnswers([...falseAnswers, count]);
+      if (сounter >= bestCounter) {
+        setBestCounter(сounter);
+      }
+      setCounter(0);
     }
 
     if (count >= words.length - 1) {
@@ -108,10 +122,18 @@ const SprintMain: FC<Props> = (props) => {
         setQueue(queue + 1);
       }
       setTrueAnswers([...trueAnswers, count]);
+      setCounter(сounter + 1);
+      if (сounter >= bestCounter) {
+        setBestCounter(сounter);
+      }
     } else {
       setQueue(0);
       setPlusScore(10);
       setFalseAnswers([...falseAnswers, count]);
+      if (сounter >= bestCounter) {
+        setBestCounter(сounter);
+      }
+      setCounter(0);
     }
 
     if (count >= words.length - 1) {
@@ -167,7 +189,10 @@ const SprintMain: FC<Props> = (props) => {
               </Button>
             </Flex>
           </Flex>
-          <Timer toResults={() => toResults()} />
+          <Timer
+            setBestResult={() => setBestResult(bestCounter)}
+            toResults={() => toResults()}
+          />
         </Flex>
       </Center>
     </Box>
