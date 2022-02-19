@@ -34,7 +34,7 @@ const SprintMain: FC<Props> = (props) => {
   const [plusScore, setPlusScore] = useState(10);
   const [count, setCount] = useState(0);
   const [queue, setQueue] = useState(0);
-  const [сounter, setCounter] = useState(0);
+  const [counter, setCounter] = useState(0);
   const [bestCounter, setBestCounter] = useState(0);
   let isTrueAnswer = false;
 
@@ -91,16 +91,16 @@ const SprintMain: FC<Props> = (props) => {
         setQueue(queue + 1);
       }
       setTrueAnswers([...trueAnswers, count]);
-      setCounter(сounter + 1);
-      if (сounter >= bestCounter) {
-        setBestCounter(сounter);
+      setCounter(counter + 1);
+      if (counter >= bestCounter) {
+        setBestCounter(counter + 1);
       }
     } else {
       setQueue(0);
       setPlusScore(10);
       setFalseAnswers([...falseAnswers, count]);
-      if (сounter >= bestCounter) {
-        setBestCounter(сounter);
+      if (counter >= bestCounter) {
+        setBestCounter(counter);
       }
       setCounter(0);
     }
@@ -122,16 +122,16 @@ const SprintMain: FC<Props> = (props) => {
         setQueue(queue + 1);
       }
       setTrueAnswers([...trueAnswers, count]);
-      setCounter(сounter + 1);
-      if (сounter >= bestCounter) {
-        setBestCounter(сounter);
+      setCounter(counter + 1);
+      if (counter >= bestCounter) {
+        setBestCounter(counter + 1);
       }
     } else {
       setQueue(0);
       setPlusScore(10);
       setFalseAnswers([...falseAnswers, count]);
-      if (сounter >= bestCounter) {
-        setBestCounter(сounter);
+      if (counter >= bestCounter) {
+        setBestCounter(counter);
       }
       setCounter(0);
     }

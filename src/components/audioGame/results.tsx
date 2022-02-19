@@ -11,7 +11,7 @@ import {
   Center,
 } from '@chakra-ui/react';
 import { ReactComponent as headphones } from '../../assets/svg/headphones.svg';
-import { Word } from '../../requests/requestTypes';
+import { Word, optional } from '../../requests/requestTypes';
 import {
   MAIN_LINK,
   getUser,
@@ -38,6 +38,15 @@ const Results: FC<Props> = (props) => {
     words,
     bestResult,
   } = props;
+
+  function checkObjLength(obj: optional): string | boolean {
+    if (Object.keys(obj).length >= 21) {
+      const arr = Object.keys(obj).map((date) => Date.parse(date));
+      const minDate = new Date(arr.sort((a: number, b: number) => a - b)[0]);
+      return `${minDate.getFullYear()}-${getZero(minDate.getMonth() + 1)}-${getZero(minDate.getDate())}`;
+    }
+    return false;
+  }
 
   function getZero(n: number): string {
     let res;
@@ -88,7 +97,6 @@ const Results: FC<Props> = (props) => {
           let newWordsCount = 0;
           const promises = Array.from(new Set(trueAnswers)).map((index) => {
             const promise = new Promise((resolve) => {
-              console.log('trueAnswers first part');
               getUserWords(
                 id,
                 words[index].id,
@@ -141,10 +149,8 @@ const Results: FC<Props> = (props) => {
           });
           Promise.all(promises)
             .then(() => {
-              console.log(trueAnswersCount, falseAnswersCount, newWordsCount, learned, bestResult);
               const secondPromises = Array.from(new Set(falseAnswers)).map((index) => {
                 const secondPromise = new Promise((resolve) => {
-                  console.log('falseAnswers first part');
                   getUserWords(
                     id,
                     words[index].id,
@@ -190,13 +196,11 @@ const Results: FC<Props> = (props) => {
               });
               Promise.all(secondPromises)
                 .then(() => {
-                  console.log(trueAnswersCount, falseAnswersCount, newWordsCount, learned, bestResult);
                   getStatistics(
                     id,
                     token,
                   )
                     .then((data) => {
-                      console.log(data);
                       const map = new Map(Object.entries(data.optional));
                       if (map.has(res)) {
                         map.set(res, {
@@ -233,10 +237,11 @@ const Results: FC<Props> = (props) => {
                           },
                           id,
                           token,
-                        )
-                          .then(() => console.log('Статистика была обновлена за: ', res));
+                        );
                       } else {
-                        console.log(1);
+                        if (checkObjLength(data.optional)) {
+                          map.delete(`${checkObjLength(data.optional)}`);
+                        }
                         map.set(res, {
                           sprint: {
                             newWords: 0,
@@ -265,8 +270,7 @@ const Results: FC<Props> = (props) => {
                           },
                           id,
                           token,
-                        )
-                          .then(() => console.log('Статистика была создана за новый день: ', res));
+                        );
                       }
                     })
                     .catch((e) => {
@@ -299,8 +303,7 @@ const Results: FC<Props> = (props) => {
                         },
                         id,
                         token,
-                      )
-                        .then(() => console.log('new statistic created for: ', res));
+                      );
                     });
                 });
             });

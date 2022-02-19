@@ -105,9 +105,9 @@ const AudioMain: FC<Props> = (props) => {
         </Text>
       ));
       setTrueAnswers([...trueAnswers, count]);
-      setCounter(сounter + 1);
+      setCounter(() => сounter + 1);
       if (сounter >= bestCounter) {
-        setBestCounter(сounter);
+        setBestCounter(сounter + 1);
       }
     } else {
       setCheckYourAnswer((
