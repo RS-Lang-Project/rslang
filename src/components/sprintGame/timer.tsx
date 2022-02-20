@@ -6,10 +6,11 @@ import {
 
 interface Props {
   toResults: () => void;
+  setBestResult: () => void;
 }
 
 const Timer: FC<Props> = (props) => {
-  const { toResults } = props;
+  const { toResults, setBestResult } = props;
   const [seconds, setSeconds] = useState(30);
   const [value, setValue] = useState(100);
 
@@ -21,6 +22,7 @@ const Timer: FC<Props> = (props) => {
 
     if (seconds <= 0) {
       clearTimeout(timer);
+      setBestResult();
       toResults();
     }
   }, [seconds, toResults]);

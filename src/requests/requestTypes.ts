@@ -53,7 +53,32 @@ export interface UserWord {
 
 export interface Statistik{
   learnedWords: number,
-  optional: object
+  optional: optional
+}
+
+export interface IDate {
+  sprint: {
+    newWords: number,
+    trueAnswers: number,
+    falseAnswers: number,
+    bestResult: number,
+  },
+  audio: {
+    newWords: number,
+    trueAnswers: number,
+    falseAnswers: number,
+    bestResult: number,
+  },
+  total: {
+    newWords: number,
+    trueAnswers: number,
+    falseAnswers: number,
+    bestResult: number,
+    learnedWords: number,
+  },
+}
+export interface optional {
+  [index: string]: IDate;
 }
 
 export interface Setting {

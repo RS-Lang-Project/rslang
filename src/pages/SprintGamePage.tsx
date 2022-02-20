@@ -19,6 +19,7 @@ const SprintGamePage: FC = () => {
   const [trueAnswers, setTrueAnswers] = useState<Array<number>>([]);
   const [falseAnswers, setFalseAnswers] = useState<Array<number>>([]);
   const [full, setFull] = useState(false);
+  const [bestResult, setBestResult] = useState(0);
   let activeComponent;
 
   useEffect(() => {
@@ -44,6 +45,7 @@ const SprintGamePage: FC = () => {
         setTrueAnswers={(arr: Array<number>) => setTrueAnswers(arr)}
         falseAnswers={falseAnswers}
         setFalseAnswers={(arr: Array<number>) => setFalseAnswers(arr)}
+        setBestResult={(n: number) => setBestResult(n)}
       />
     );
   } else if (page === 'results') {
@@ -53,6 +55,7 @@ const SprintGamePage: FC = () => {
         trueAnswers={trueAnswers}
         falseAnswers={falseAnswers}
         words={words}
+        bestResult={bestResult}
       />
     );
   }

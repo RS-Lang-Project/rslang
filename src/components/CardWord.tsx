@@ -77,7 +77,11 @@ const CardWord: FC<CardWordProps> = ({ wordDate }) => {
     if (isDifficult) {
       updateUserWord({
         difficulty: 'normal',
-        optional: {},
+        optional: {
+          trueAnswers: 0,
+          falseAnswers: 0,
+          learnedCount: 0,
+        },
       }, userId, wordDate.id, userToken);
       setIsDifficult(false);
     } else {
@@ -110,19 +114,31 @@ const CardWord: FC<CardWordProps> = ({ wordDate }) => {
     if (isLearned) {
       updateUserWord({
         difficulty: 'normal',
-        optional: {},
+        optional: {
+          trueAnswers: 0,
+          falseAnswers: 0,
+          learnedCount: 0,
+        },
       }, userId, wordDate.id, userToken);
       setIsLearned(false);
     } else {
       if (!isAgrigate) {
         createUserWord({
           difficulty: 'easy',
-          optional: {},
+          optional: {
+            trueAnswers: 0,
+            falseAnswers: 0,
+            learnedCount: 0,
+          },
         }, userId, wordDate.id, userToken);
       } else {
         updateUserWord({
           difficulty: 'easy',
-          optional: {},
+          optional: {
+            trueAnswers: 0,
+            falseAnswers: 0,
+            learnedCount: 0,
+          },
         }, userId, wordDate.id, userToken);
       }
       setIsAgrigate(true);
