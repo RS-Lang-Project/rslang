@@ -17,6 +17,7 @@ import {
 import { CgChevronLeft, CgChevronRight } from 'react-icons/cg';
 import Footer from '../components/Footer';
 import { ReactComponent as HeaderWave } from '../assets/svg/HeaderWave.svg';
+import { ReactComponent as FooterWave } from '../assets/svg/FooterWave.svg';
 import List from '../components/List';
 import { Word, UserWord } from '../requests/requestTypes';
 import CardWord from '../components/CardWord';
@@ -95,7 +96,7 @@ const TextbookPage: FC = () => {
   return (
     <Box>
       <HeaderWave />
-      <Box>
+      <Box minH="66.3vh">
         <Flex m={5} gap={5} justifyContent="center">
           <Link to={`/audio-game/${currentLevel}/${currentPage}`}>
             <Box
@@ -199,6 +200,7 @@ const TextbookPage: FC = () => {
             < > </>
           )}
       </Box>
+      <FooterWave />
       <Footer />
     </Box>
   );
