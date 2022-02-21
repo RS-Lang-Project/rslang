@@ -1,12 +1,8 @@
 import { FC } from 'react';
 import {
   Box,
-  Center,
-  Flex,
   Heading,
   Image,
-  Stack,
-  Divider,
   Text,
 } from '@chakra-ui/react';
 

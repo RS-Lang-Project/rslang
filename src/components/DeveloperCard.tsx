@@ -1,17 +1,14 @@
 import { FC } from 'react';
 import {
-  Box,
-  Center,
   Flex,
   Heading,
-  Image,
   Tag,
-  Stack,
-  Divider,
+  Link,
   Text,
   Avatar,
   useColorModeValue,
 } from '@chakra-ui/react';
+import { ReactComponent as GitHubIcon } from '../assets/svg/GitHubIcon.svg';
 
 const backgrounds = [
   `url("data:image/svg+xml, %3Csvg xmlns='http://www.w3.org/2000/svg' 
@@ -37,6 +34,7 @@ interface DeveloperCardProps {
   content: string;
   avatar: string;
   index: number;
+  href: string;
 }
 
 const DeveloperCard: FC<DeveloperCardProps> = ({
@@ -44,6 +42,7 @@ const DeveloperCard: FC<DeveloperCardProps> = ({
   content,
   avatar,
   index,
+  href,
 }) => (
   <Flex
     boxShadow="lg"
@@ -103,9 +102,12 @@ const DeveloperCard: FC<DeveloperCardProps> = ({
       <Heading as="h3" size="md" color="purple.800" mb={2}>
         {name}
       </Heading>
-      <Box mb={6}>
-        <Tag border="30px" bg="yellow.300" color="#fff">Frontend developer</Tag>
-      </Box>
+      <Flex mb={6}>
+        <Tag mr={4} border="30px" bg="yellow.300" color="#fff">Frontend developer</Tag>
+        <Link href={href}>
+          <GitHubIcon />
+        </Link>
+      </Flex>
       <Text
         fontWeight={500}
         color="purple.800"

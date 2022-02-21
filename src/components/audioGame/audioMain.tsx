@@ -100,7 +100,7 @@ const AudioMain: FC<Props> = (props) => {
   function checkTrueAnswer(word: string) {
     if (word === words[count].wordTranslate) {
       setCheckYourAnswer((
-        <Text m="5px" fontWeight="bold" color="green">
+        <Text m="5px" fontWeight="bold" color="green" textAlign="center">
           {`Правильно! ${words[count].word} - ${words[count].wordTranslate}`}
         </Text>
       ));
@@ -111,7 +111,7 @@ const AudioMain: FC<Props> = (props) => {
       }
     } else {
       setCheckYourAnswer((
-        <Text m="5px" fontWeight="bold" color="red">
+        <Text m="5px" fontWeight="bold" color="red" textAlign="center">
           {`Упс.. У вас ошибка в слове ${words[count].word}`}
         </Text>
       ));
@@ -126,7 +126,7 @@ const AudioMain: FC<Props> = (props) => {
   }
 
   return (
-    <Box color="white" h="100vh" p="100px 0 100px 0">
+    <Box color="white" h="91vh" p="100px 0 100px 0">
       <Center h="100%">
         <Flex direction="column" align="center">
           <Text fontWeight="bold" fontSize="32px">
@@ -165,7 +165,7 @@ const AudioMain: FC<Props> = (props) => {
             </Box>
             <Grid
               m="15px auto 15px auto"
-              w="300px"
+              w="400px"
               gridTemplateColumns="auto auto"
               gridTemplateRows="auto auto"
               gap="10px"
@@ -207,8 +207,8 @@ const AudioMain: FC<Props> = (props) => {
                 {` ${words[answers[3]].wordTranslate}`}
               </Button>
             </Grid>
+            {CheckYourAnswer !== null ? CheckYourAnswer : ''}
           </Flex>
-          {CheckYourAnswer !== null ? CheckYourAnswer : ''}
           <Button
             className="dontKnow"
             colorScheme="red"
