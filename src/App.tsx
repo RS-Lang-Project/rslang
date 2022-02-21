@@ -2,6 +2,10 @@ import { FC, Suspense, lazy } from 'react';
 import {
   BrowserRouter, Route, Routes,
 } from 'react-router-dom';
+import {
+  Spinner,
+  Flex,
+} from '@chakra-ui/react';
 import './styles/App.css';
 import Header from './components/Header';
 
@@ -17,7 +21,18 @@ const App: FC = () => (
   <BrowserRouter>
     <div className="App">
       <Header />
-      <Suspense fallback={<div>Загрузка...</div>}>
+      <Suspense fallback={(
+        <Flex justifyContent="center" mt={10}>
+          <Spinner
+            thickness="4px"
+            speed="0.65s"
+            emptyColor="gray.200"
+            color="yellow.400"
+            size="xl"
+          />
+        </Flex>
+      )}
+      >
         <Routes>
           <Route path="/" element={<MainPage />} />
           <Route path="/textbook" element={<TextbookPage />} />

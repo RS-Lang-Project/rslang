@@ -312,7 +312,7 @@ const Results: FC<Props> = (props) => {
   }, []);
 
   return (
-    <Box color="black" h="100vh" p="100px 0 100px 0">
+    <Box color="black" h="91vh" p="100px 0 100px 0">
       <Center h="100%">
         <Flex maxH="80%" overflowY="scroll" background="white" p="20px" borderRadius="10px" direction="column">
           <Heading textAlign="center" m="10px" fontSize="22px" as="h2">

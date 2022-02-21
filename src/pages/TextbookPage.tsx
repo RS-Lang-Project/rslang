@@ -3,6 +3,8 @@ import {
   Box,
   Flex,
   Button,
+  Text,
+  Spinner,
   Heading,
 } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
@@ -15,13 +17,18 @@ import {
   usePaginator,
 } from 'chakra-paginator';
 import { CgChevronLeft, CgChevronRight } from 'react-icons/cg';
+import { CheckIcon } from '@chakra-ui/icons';
 import Footer from '../components/Footer';
 import { ReactComponent as HeaderWave } from '../assets/svg/HeaderWave.svg';
 import { ReactComponent as FooterWave } from '../assets/svg/FooterWave.svg';
 import List from '../components/List';
 import { Word, UserWord } from '../requests/requestTypes';
 import CardWord from '../components/CardWord';
-import { getAllWords, getAllUserWords, getWord } from '../requests/serverRequests';
+import {
+  getAllWords,
+  getAllUserWords,
+  getWord,
+} from '../requests/serverRequests';
 import {
   levelsArr,
   normalStyles,
@@ -30,6 +37,7 @@ import {
 } from '../components/textbookData';
 
 const TextbookPage: FC = () => {
+  const [isReady, setIsReady] = useState <boolean>(false);
   const [dataWords, setDataWords] = useState <Word[]>([]);
   const pagesQuantity = 30;
   const hasToken = localStorage.getItem('userToken');
@@ -56,6 +64,7 @@ const TextbookPage: FC = () => {
   if (!level) {
     level = '1';
   }
+  const [isDone, setIsDone] = useState<boolean>(false);
   const [currentLevel, setCurrentLevel] = useState(+level);
   const { currentPage, setCurrentPage } = usePaginator({
     initialState: { currentPage: page },
@@ -67,9 +76,22 @@ const TextbookPage: FC = () => {
   });
 
   useEffect(() => {
+    setIsReady(false);
+    setIsDone(false);
     if (currentLevel !== 7) {
       getAllWords(currentLevel - 1, currentPage - 1)
-        .then((data: Array<Word>) => setDataWords(data));
+        .then((data: Array<Word>) => {
+          setDataWords(data);
+          getAllUserWords(userId, userToken)
+            .then(((dataUser: Array<UserWord>) => {
+              const dataUserId = dataUser.filter((item) => item.difficulty === 'hard' || item.difficulty === 'easy')
+                .map((item) => item.wordId);
+              const result = data.filter((item) => dataUserId.includes(item.id));
+              if (result.length === 20) {
+                setIsDone(true);
+              }
+            }));
+        });
     } else {
       getAllUserWords(userId, userToken)
         .then(((data: Array<UserWord>) => {
@@ -83,6 +105,7 @@ const TextbookPage: FC = () => {
           });
         }));
     }
+    setIsReady(true);
   }, [currentPage, currentLevel, userId, userToken]);
 
   function changeLevel(id: string) {
@@ -97,34 +120,64 @@ const TextbookPage: FC = () => {
     <Box>
       <HeaderWave />
       <Box minH="66.3vh">
-        <Flex m={5} gap={5} justifyContent="center">
-          <Link to={`/audio-game/${currentLevel}/${currentPage}`}>
-            <Box
-              p="10px 20px"
-              bg="yellow.300"
-              color="purple.800"
-              borderColor="purple.800"
-              borderRadius="10px"
-              fontWeight="500"
-              border="2px"
-            >
-              Audio Game
-            </Box>
-          </Link>
-          <Link to={`/sprint-game/${currentLevel}/${currentPage}`}>
-            <Box
-              p="10px 20px"
-              bg="yellow.300"
-              color="purple.800"
-              borderColor="purple.800"
-              borderRadius="10px"
-              fontWeight="500"
-              border="2px"
-            >
-              Sprint Game
-            </Box>
-          </Link>
-        </Flex>
+        {isDone
+          ? (
+            <Flex m={5} gap={5} justifyContent="center">
+              <Box
+                p="10px 20px"
+                bg="yellow.200"
+                color="gray.400"
+                borderColor="gray.400"
+                borderRadius="10px"
+                fontWeight="500"
+                border="2px"
+                cursor="not-allowed"
+              >
+                Audio Game
+              </Box>
+              <Box
+                p="10px 20px"
+                bg="yellow.200"
+                color="gray.400"
+                borderColor="gray.400"
+                borderRadius="10px"
+                fontWeight="500"
+                border="2px"
+                cursor="not-allowed"
+              >
+                Sprint Game
+              </Box>
+            </Flex>
+          ) : (
+            <Flex m={5} gap={5} justifyContent="center">
+              <Link to={`/audio-game/${currentLevel}/${currentPage}`}>
+                <Box
+                  p="10px 20px"
+                  bg="yellow.300"
+                  color="purple.800"
+                  borderColor="purple.800"
+                  borderRadius="10px"
+                  fontWeight="500"
+                  border="2px"
+                >
+                  Audio Game
+                </Box>
+              </Link>
+              <Link to={`/sprint-game/${currentLevel}/${currentPage}`}>
+                <Box
+                  p="10px 20px"
+                  bg="yellow.300"
+                  color="purple.800"
+                  borderColor="purple.800"
+                  borderRadius="10px"
+                  fontWeight="500"
+                  border="2px"
+                >
+                  Sprint Game
+                </Box>
+              </Link>
+            </Flex>
+          )}
         <Flex
           justifyContent="center"
           flexDirection={{ sm: 'column', md: 'row' }}
@@ -132,7 +185,7 @@ const TextbookPage: FC = () => {
           flexWrap="wrap"
           gap={{ sm: '20px', md: '170px' }}
         >
-          <Flex alignItems="center" gap={{ sm: '10px', md: '20px' }}>
+          <Flex alignItems="center" gap={{ base: '10px', md: '20px' }}>
             <Heading fontSize="2xl" color="purple.800">Levels</Heading>
             {levelsArr.map((p) => (
               <Button
@@ -165,16 +218,46 @@ const TextbookPage: FC = () => {
               < > </>
             )}
         </Flex>
-        <List
-          items={dataWords}
-          renderItems={(word: Word) => (
-            <CardWord
-              key={word.id}
-              wordDate={word}
-            />
+        {dataWords.length === 0 && currentLevel === 7
+          ? (
+            <Text color="red" textAlign="center" mt={20} fontWeight="500" fontSize="26px">
+              Для начала работы - добавьте выбранные слова в раздел &quot;Сложные слова&quot;
+            </Text>
+          ) : (
+            < > </>
           )}
-        />
-        {currentLevel !== 7
+        {isDone && isAuthorization
+          ? (
+            <Flex alignItems="center" gap="20px" justifyContent="center" mt={6}>
+              <CheckIcon color="green.500" w="25px" h="25px" />
+              <Text color="green.500" fontWeight="700" fontSize="25px" textAlign="center">Слова пройдены</Text>
+            </Flex>
+          ) : (
+            < > </>
+          )}
+        {isReady
+          ? (
+            <List
+              items={dataWords}
+              renderItems={(word: Word) => (
+                <CardWord
+                  key={word.id}
+                  wordDate={word}
+                />
+              )}
+            />
+          ) : (
+            <Flex justifyContent="center" mt={10}>
+              <Spinner
+                thickness="4px"
+                speed="0.65s"
+                emptyColor="gray.200"
+                color="yellow.400"
+                size="xl"
+              />
+            </Flex>
+          )}
+        {currentLevel !== 7 && isReady
           ? (
             <Paginator
               activeStyles={activeStyles}

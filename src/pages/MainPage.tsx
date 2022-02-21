@@ -82,7 +82,15 @@ const MainPage: FC = () => (
         Узнай больше о возможностях
       </Heading>
       <Flex justifyContent="center">
-        <iframe width="800" height="515" src="https://www.youtube.com/embed/36YnV9STBqc" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
+        <iframe
+          width="800"
+          height="515"
+          src="https://www.youtube.com/embed/Z10tGV0IAIY"
+          title="YouTube video player"
+          frameBorder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+        />
       </Flex>
       <Heading textAlign="center" mt={20} as="h2" size="lg" color="purple.800">
         О нас
@@ -94,7 +102,7 @@ const MainPage: FC = () => (
         width="full"
       >
         <SimpleGrid
-          columns={{ base: 1, xl: 2 }}
+          columns={1}
           spacing="20"
           mt={16}
           mx="auto"
@@ -102,14 +110,17 @@ const MainPage: FC = () => (
           <DeveloperCard
             index={0}
             name="Dmitriy Nikitenko"
-            content="Разработал игры Аудиовизов и Спринт. Реализовал раздел статистики. Настроил получение данных из бекенда."
+            content="Разработал игры Аудиовизов и Спринт. Реализовал раздел статистики.
+            Настроил получение данных из бекенда."
             avatar={DmitriyPhoto}
+            href="https://github.com/Dmitriy-hello-world"
           />
           <DeveloperCard
             index={1}
             name="Kateryna Vinskovska"
             content="Создала главную страницу и раздел Учебник. Настроила роутинг и авторизацию."
             avatar={KaterynaPhoto}
+            href="https://github.com/Ket1911"
           />
         </SimpleGrid>
         <Box>

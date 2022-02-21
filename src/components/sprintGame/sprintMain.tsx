@@ -144,7 +144,7 @@ const SprintMain: FC<Props> = (props) => {
   }
 
   return (
-    <Box color="white" h="100vh" p="100px 0 100px 0">
+    <Box color="white" h="91vh" p="100px 0 100px 0">
       <Center h="100%">
         <Flex direction="column" align="center">
           <Text fontWeight="bold" fontSize="32px">

@@ -114,7 +114,7 @@ const BtnSignIn = () => {
         ? (
           <Button
             onClick={openModal}
-            marginLeft="20"
+            marginLeft={{ base: '0px', md: '20px' }}
             variant="outline"
             bg="yellow.300"
             color="purple.800"
@@ -125,7 +125,7 @@ const BtnSignIn = () => {
         ) : (
           <Button
             onClick={logOut}
-            marginLeft="20"
+            marginLeft={{ base: '0px', md: '20px' }}
             variant="outline"
             bg="yellow.300"
             color="purple.800"

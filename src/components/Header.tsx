@@ -41,11 +41,12 @@ const Header: FC = (props) => {
           </Box>
 
           <Stack
-            direction={{ base: 'column', md: 'row' }}
-            display={{ base: isOpen ? 'block' : 'none', md: 'flex' }}
+            direction={{ base: 'row', md: 'row' }}
+            flexWrap="wrap"
+            display={{ base: isOpen ? 'flex' : 'none', md: 'flex' }}
             width={{ base: 'full', md: 'auto' }}
             flexGrow={1}
-            justifyContent={{ base: 'end', md: 'end' }}
+            justifyContent={{ base: 'center', md: 'end' }}
             mt={{ base: 4, md: 0 }}
             alignItems="center"
           >

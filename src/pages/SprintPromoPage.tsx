@@ -12,7 +12,7 @@ import Levels from '../components/sprintGame/levels';
 const SprintPromoPage: FC = () => (
   <Box overflow="hidden" bg="linear-gradient(rgb(127, 83, 172) 0%,rgb(100, 125, 238) 100%)">
     <Container maxWidth="container.xl">
-      <Box color="white" h="100vh" p="100px 0 100px 0">
+      <Box color="white" h="91vh" p="100px 0 100px 0">
         <Center h="100%">
           <Flex m="0 auto 0 auto" direction="column" w="576px" align="center">
             <Heading m="0 0 20px 0" fontSize="42px" as="h2" size="lg">
@@ -22,7 +22,7 @@ const SprintPromoPage: FC = () => (
               Спринт - тренировка на скорость.
             </Text>
             <Text fontSize="24px" lineHeight="24px" align="center">
-              Наберите максимальное количество првильных ответов за 30 секнд.
+              Наберите максимальное количество правильных ответов за 30 секунд.
             </Text>
             <Text m="15px 0 0 0" fontSize="24px" fontWeight="bold" lineHeight="24px" align="center">
               Выберите уровень сложности слов:

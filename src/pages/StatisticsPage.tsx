@@ -14,6 +14,8 @@ import {
   Grid,
 } from '@chakra-ui/react';
 import Footer from '../components/Footer';
+import { ReactComponent as HeaderWave } from '../assets/svg/HeaderWave.svg';
+import { ReactComponent as FooterWave } from '../assets/svg/FooterWave.svg';
 import {
   getStatistics,
   getUser,
@@ -136,7 +138,7 @@ const StatisticsPage: FC = () => {
 
   if (userMessage) {
     content = (
-      <Text color="red.500" fontSize="36px" fontWeight="bold" m="20px" textAlign="center">{userMessage}</Text>
+      <Text color="red.500" fontSize="26px" fontWeight="bold" m="20px" textAlign="center">{userMessage}</Text>
     );
   } else {
     content = (
@@ -265,7 +267,8 @@ const StatisticsPage: FC = () => {
 
   return (
     <div>
-      <Box>
+      <HeaderWave />
+      <Box minH="68vh">
         <Flex direction="column">
           <Heading as="h2" textAlign="center" m="10px">
             Статистика пользователя
@@ -284,6 +287,7 @@ const StatisticsPage: FC = () => {
           {content}
         </Flex>
       </Box>
+      <FooterWave />
       <Footer />
     </div>
   );

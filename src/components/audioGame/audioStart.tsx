@@ -21,6 +21,7 @@ const AudioStart: FC<Props> = (props) => {
   if (!isReady) {
     startBtn = (
       <Button
+        minW="180px"
         isLoading
         colorScheme="green"
       >
@@ -30,6 +31,7 @@ const AudioStart: FC<Props> = (props) => {
   } else {
     startBtn = (
       <Button
+        minW="180px"
         colorScheme="teal"
         variant="solid"
         onClick={() => toMain()}
@@ -40,18 +42,16 @@ const AudioStart: FC<Props> = (props) => {
   }
 
   return (
-    <Box color="white" h="100vh" p="100px 0 100px 0">
+    <Box color="white" h="91vh" p="100px 0 100px 0">
       <Center h="100%">
         <Flex direction="column" align="center">
-          <Heading as="h2">
+          <Heading mb={6} as="h2">
             Аудиовызов
           </Heading>
-          <Text m="15px" fontSize="20px">
-            Возможно тут будет какой-то текст...
-          </Text>
           {startBtn}
           <Link to="/audio">
             <Button
+              minW="180px"
               mt="15px"
               colorScheme="purple"
               variant="solid"

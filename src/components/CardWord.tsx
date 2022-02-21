@@ -6,6 +6,7 @@ import {
   Flex,
   Heading,
   Image,
+  Tag,
   Stack,
   Divider,
   Text,
@@ -47,6 +48,8 @@ const CardWord: FC<CardWordProps> = ({ wordDate }) => {
   let isPlay = false;
   const [isDifficult, setIsDifficult] = useState(false);
   const [isLearned, setIsLearned] = useState(false);
+  const [countTrueAnswer, setCountTrueAnswer] = useState(0);
+  const [countFalseAnswer, setCountFalseAnswer] = useState(0);
 
   useEffect(() => {
     if (isAuthorization) {
@@ -66,6 +69,8 @@ const CardWord: FC<CardWordProps> = ({ wordDate }) => {
           } else if (data.difficulty === 'easy') {
             setIsLearned(true);
           }
+          setCountTrueAnswer(data.optional.trueAnswers);
+          setCountFalseAnswer(data.optional.falseAnswers);
         })
         .catch((e) => {
           warningMessage = e.message;
@@ -297,6 +302,21 @@ const CardWord: FC<CardWordProps> = ({ wordDate }) => {
               size="sm"
             />
           </Box>
+          {isAuthorization
+            ? (
+              <Flex>
+                <Tag fontSize="12px" mr={4} border="30px" bg="green.400" color="#fff">
+                  Правильных ответов:
+                  {countTrueAnswer}
+                </Tag>
+                <Tag fontSize="12px" mr={4} border="30px" bg="red.400" color="#fff">
+                  Неправильных ответов:
+                  {countFalseAnswer}
+                </Tag>
+              </Flex>
+            ) : (
+              < > </>
+            )}
         </Stack>
       </Stack>
     </Center>
