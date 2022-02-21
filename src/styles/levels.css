@@ -1,0 +1,5 @@
+.sprint__round:hover {
+  border: 2px solid #000;
+  color: #000;
+  transition: all 0.3s;
+}

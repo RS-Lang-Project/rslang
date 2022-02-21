@@ -1,0 +1,4 @@
+.audio__play:hover {
+  background: rgb(69, 66, 66);
+  transition: all .3s;
+}
